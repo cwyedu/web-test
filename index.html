@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>王大同 | Lv.99 Game Developer Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Press Start 2P & Share Tech Mono & VT323 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#050811',
+                            panel: 'rgba(10, 16, 32, 0.85)',
+                            border: '#1a2c4e',
+                            yellow: '#fcee0a',
+                            cyan: '#00f0ff',
+                            pink: '#ff0055',
+                            neonGreen: '#00ff66',
+                            purple: '#9d00ff'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        pixel: ['"Press Start 2P"', 'cursive'],
+                        mono: ['"Share Tech Mono"', 'monospace'],
+                    },
+                    animation: {
+                        'scanline': 'scanline 8s linear infinite',
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        scanline: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(1000%)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Cyberpunk Scanlines & HUD Effects */
+        .scanline-overlay {
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%
+            );
+            background-size: 100% 4px;
+        }
+
+        .hud-border {
+            position: relative;
+            background: rgba(8, 12, 24, 0.85);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.05);
+        }
+
+        /* HUD Corner Brackets */
+        .hud-corner {
+            position: relative;
+        }
+        .hud-corner::before, .hud-corner::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: #00f0ff;
+            pointer-events: none;
+        }
+        .hud-corner::before {
+            top: -2px;
+            left: -2px;
+            border-top: 2px solid #00f0ff;
+            border-left: 2px solid #00f0ff;
+        }
+        .hud-corner::after {
+            bottom: -2px;
+            right: -2px;
+            border-bottom: 2px solid #00f0ff;
+            border-right: 2px solid #00f0ff;
+        }
+
+        /* Cyber Glows */
+        .glow-cyan {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.8), 0 0 25px rgba(0, 240, 255, 0.5), 0 0 50px rgba(0, 240, 255, 0.3);
+        }
+        .glow-pink {
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.8), 0 0 25px rgba(255, 0, 85, 0.5);
+        }
+        .glow-yellow {
+            text-shadow: 0 0 10px rgba(252, 238, 10, 0.8), 0 0 25px rgba(252, 238, 10, 0.5);
+        }
+
+        /* Mega Name Glow & Glitch Effect */
+        .hero-mega-title {
+            font-size: clamp(4.5rem, 13vw, 11rem);
+            line-height: 0.95;
+            letter-spacing: 0.05em;
+            background: linear-gradient(180deg, #ffffff 0%, #00f0ff 65%, #ff0055 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 35px rgba(0, 240, 255, 0.6)) drop-shadow(0 0 70px rgba(255, 0, 85, 0.4));
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-mega-title::before,
+        .hero-mega-title::after {
+            content: '王大同';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-mega-title::before {
+            background: #00f0ff;
+            -webkit-background-clip: text;
+            animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+            clip: rect(0, 900px, 0, 0);
+            opacity: 0.75;
+        }
+
+        .hero-mega-title::after {
+            background: #ff0055;
+            -webkit-background-clip: text;
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+            clip: rect(0, 900px, 0, 0);
+            opacity: 0.75;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip: rect(20px, 9999px, 15px, 0); transform: skew(0.3deg); }
+            10% { clip: rect(50px, 9999px, 80px, 0); transform: skew(0.8deg); }
+            20% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
+            100% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
+            80% { clip: rect(0, 9999px, 0, 0); transform: skew(0deg); }
+            90% { clip: rect(35px, 9999px, 10px, 0); transform: skew(-0.5deg); }
+            100% { clip: rect(70px, 9999px, 45px, 0); transform: skew(-1deg); }
+        }
+
+        .box-glow-cyan:hover {
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            border-color: #00f0ff;
+        }
+        .box-glow-pink:hover {
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
+            border-color: #ff0055;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050811;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00f0ff;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="bg-cyber-bg text-slate-200 font-mono antialiased selection:bg-cyber-pink selection:text-white min-h-screen relative overflow-x-hidden">
+
+    <!-- CRT Scanline Effect -->
+    <div class="fixed inset-0 pointer-events-none z-50 scanline-overlay opacity-60"></div>
+
+    <!-- Cyber Matrix Grid & Particle Background -->
+    <canvas id="cyberCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+
+    <!-- Custom Modal Dialog (Quest Cleared / Message Sent) -->
+    <div id="gameModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="hud-border hud-corner p-6 sm:p-8 max-w-md w-full mx-4 border-2 border-cyber-yellow bg-cyber-bg shadow-[0_0_30px_rgba(252,238,10,0.3)]">
+            <div class="flex items-center gap-3 text-cyber-yellow font-orbitron font-bold text-xl mb-4">
+                <i class="fa-solid fa-trophy animate-bounce"></i>
+                <span id="modalTitle">QUEST ACCEPTED!</span>
+            </div>
+            <p class="text-slate-300 text-sm mb-6 leading-relaxed font-mono" id="modalMessage">
+                訊息已傳送給【王大同】！系統已建立任務隊列，將於 24 小時內回覆您的召喚。
+            </p>
+            <button onclick="closeModal()" class="w-full py-3 bg-cyber-yellow text-black font-orbitron font-black hover:bg-white transition duration-200 uppercase tracking-widest text-sm shadow-[0_0_10px_rgba(252,238,10,0.6)]">
+                [ CONFIRM ]
+            </button>
+        </div>
+    </div>
+
+    <!-- Top Game HUD Navbar -->
+    <header class="fixed top-0 left-0 w-full z-40 bg-cyber-bg/90 border-b border-cyber-cyan/30 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                
+                <!-- Player Name / Logo -->
+                <a href="#hero" class="flex items-center gap-3 group">
+                    <div class="w-9 h-9 bg-cyber-yellow/20 border border-cyber-yellow flex items-center justify-center text-cyber-yellow font-pixel text-xs group-hover:bg-cyber-yellow group-hover:text-black transition">
+                        P1
+                    </div>
+                    <div>
+                        <div class="font-orbitron font-black text-cyber-yellow text-lg tracking-wider flex items-center gap-2 glow-yellow">
+                            王大同 <span class="text-xs text-cyber-cyan font-mono font-normal">[DATONG WANG]</span>
+                        </div>
+                        <div class="text-[10px] text-slate-400 font-mono leading-none">STATUS: LV.99 GAME DEV</div>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav Tabs -->
+                <nav class="hidden md:flex items-center space-x-1 font-orbitron text-xs">
+                    <a href="#status" class="px-3 py-1.5 text-slate-300 hover:text-cyber-cyan hover:border-b-2 hover:border-cyber-cyan transition">[01. STATUS]</a>
+                    <a href="#skills" class="px-3 py-1.5 text-slate-300 hover:text-cyber-cyan hover:border-b-2 hover:border-cyber-cyan transition">[02. SKILLS]</a>
+                    <a href="#quests" class="px-3 py-1.5 text-slate-300 hover:text-cyber-cyan hover:border-b-2 hover:border-cyber-cyan transition">[03. QUESTS]</a>
+                    <a href="#timeline" class="px-3 py-1.5 text-slate-300 hover:text-cyber-cyan hover:border-b-2 hover:border-cyber-cyan transition">[04. LOGS]</a>
+                    <a href="#guild" class="px-3 py-1.5 text-slate-300 hover:text-cyber-yellow hover:border-b-2 hover:border-cyber-yellow transition text-cyber-yellow">[05. GUILD]</a>
+                </nav>
+
+                <!-- Audio Switch / Mobile Menu Trigger -->
+                <div class="flex items-center gap-3">
+                    <button id="sfxBtn" class="px-3 py-1.5 bg-slate-900 border border-slate-700 text-xs text-slate-400 hover:text-cyber-cyan hover:border-cyber-cyan transition font-mono flex items-center gap-1.5">
+                        <i class="fa-solid fa-volume-high text-cyber-cyan"></i>
+                        <span class="hidden sm:inline">SFX: ON</span>
+                    </button>
+
+                    <button id="mobileMenuBtn" class="md:hidden text-cyber-cyan p-2">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-cyber-bg border-b border-cyber-cyan/30 px-4 py-4 space-y-2 font-orbitron text-xs">
+            <a href="#status" class="block px-3 py-2 text-slate-300 hover:text-cyber-cyan">[01. STATUS]</a>
+            <a href="#skills" class="block px-3 py-2 text-slate-300 hover:text-cyber-cyan">[02. SKILLS]</a>
+            <a href="#quests" class="block px-3 py-2 text-slate-300 hover:text-cyber-cyan">[03. QUESTS]</a>
+            <a href="#timeline" class="block px-3 py-2 text-slate-300 hover:text-cyber-cyan">[04. LOGS]</a>
+            <a href="#guild" class="block px-3 py-2 text-cyber-yellow">[05. GUILD]</a>
+        </div>
+    </header>
+
+    <!-- Main Game Canvas Content -->
+    <main class="relative z-10 pt-16">
+
+        <!-- 1. Hero Title / Game Start Section -->
+        <section id="hero" class="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 sm:px-6 lg:px-8 relative py-12">
+            <div class="max-w-5xl mx-auto text-center">
+                
+                <!-- Game Engine / Ready Tag -->
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 hud-border hud-corner text-cyber-cyan text-xs font-mono mb-6 animate-pulse-fast">
+                    <i class="fa-solid fa-gamepad text-cyber-pink"></i>
+                    <span>PLAYER ONE REGISTERED // SYSTEM ONLINE</span>
+                </div>
+
+                <!-- PLAYER 1 SUBTITLE -->
+                <div class="text-xs sm:text-base font-orbitron text-cyber-yellow font-black tracking-[0.3em] uppercase mb-2">
+                    [ MAIN CHARACTER SELECT: PLAYER 1 ]
+                </div>
+
+                <!-- MEGA NAME: 王大同 (MAXIMUM IMPACT) -->
+                <div class="my-2 select-none relative">
+                    <h1 class="hero-mega-title font-orbitron font-black uppercase">
+                        王大同
+                    </h1>
+                </div>
+
+                <!-- Subtitle Title Banner -->
+                <div class="text-lg sm:text-2xl font-orbitron text-white font-bold tracking-widest mb-6 uppercase">
+                    WANG DA-TONG <span class="text-cyber-pink font-normal text-sm sm:text-base">// SENIOR GAME DEVELOPER</span>
+                </div>
+
+                <p class="text-slate-400 font-mono text-sm sm:text-base max-w-2xl mx-auto mb-10 leading-relaxed">
+                    精通 3D 遊戲引擎核心、Shader 高階渲染、WebGL 沉浸互動與遊戲架構開發。<br>
+                    打造極致流暢、驚豔視覺的遊戲世界！
+                </p>
+
+                <!-- HUD Action Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 font-orbitron text-xs sm:text-sm font-bold">
+                    <a href="#status" class="w-full sm:w-auto px-8 py-3.5 bg-cyber-yellow text-black hover:bg-white transition duration-200 box-glow-cyan flex items-center justify-center gap-2 tracking-widest">
+                        <i class="fa-solid fa-play"></i> START GAME
+                    </a>
+                    <a href="#quests" class="w-full sm:w-auto px-8 py-3.5 hud-border text-cyber-cyan hover:border-cyber-cyan transition duration-200 box-glow-pink flex items-center justify-center gap-2 tracking-widest">
+                        <i class="fa-solid fa-list-check"></i> VIEW QUESTS
+                    </a>
+                </div>
+
+                <!-- Bottom Game Status Overlay -->
+                <div class="mt-12 sm:mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto font-mono text-xs text-slate-400">
+                    <div class="hud-border p-3">EXP: <span class="text-cyber-cyan font-bold">999,999</span></div>
+                    <div class="hud-border p-3">PING: <span class="text-cyber-neonGreen font-bold">12 ms</span></div>
+                    <div class="hud-border p-3">FRAME: <span class="text-cyber-yellow font-bold">120 FPS</span></div>
+                    <div class="hud-border p-3">GUILD: <span class="text-cyber-pink font-bold">INDIE DEV</span></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 2. Player Profile & Stats Card Section -->
+        <section id="status" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+            <div class="flex items-center gap-3 mb-10 border-b border-cyber-cyan/30 pb-3">
+                <i class="fa-solid fa-user-gear text-cyber-cyan text-xl"></i>
+                <h2 class="text-2xl sm:text-3xl font-orbitron font-bold text-white tracking-wider uppercase">
+                    [01] PLAYER STATS: 王大同
+                </h2>
+            </div>
+<!-- ... existing code -->
